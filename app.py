@@ -17,6 +17,7 @@ from utils.ats_checker import (
 from modules.cover_letter import cover_letter_page
 from modules.interview import interview_page
 from modules.resume_match import resume_match_page
+from modules.interview import interview_page
 
 # ------------------------------------------
 # Configure Streamlit Page
