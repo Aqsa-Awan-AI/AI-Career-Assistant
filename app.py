@@ -26,7 +26,92 @@ st.set_page_config(
     page_icon="🤖",
     layout="wide"
 )
+st.markdown("""
+<style>
 
+/* Main App */
+.stApp{
+    background: linear-gradient(135deg,#eef4ff,#f9fbff);
+}
+
+/* Main Container */
+.block-container{
+    padding-top:2rem;
+    padding-bottom:2rem;
+    max-width:1200px;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"]{
+    background:#0f172a;
+}
+
+section[data-testid="stSidebar"] *{
+    color:white !important;
+}
+
+/* Main Title */
+h1{
+    color:#1e293b !important;
+    font-weight:800 !important;
+    font-size:3rem !important;
+}
+
+/* Sub Headings */
+h2,h3{
+    color:#2563eb !important;
+    font-weight:700 !important;
+}
+
+/* Buttons */
+.stButton>button{
+    background:linear-gradient(90deg,#2563eb,#3b82f6);
+    color:white;
+    border:none;
+    border-radius:12px;
+    padding:12px 22px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.stButton>button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,.35);
+}
+
+/* Text Input */
+.stTextInput>div>div>input{
+    border-radius:12px;
+}
+
+/* Text Area */
+textarea{
+    border-radius:12px !important;
+}
+
+/* File Uploader */
+[data-testid="stFileUploader"]{
+    border:2px dashed #3b82f6;
+    border-radius:15px;
+    padding:15px;
+    background:white;
+}
+
+/* Metrics */
+[data-testid="metric-container"]{
+    border-radius:15px;
+    background:white;
+    padding:15px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+/* Success Boxes */
+div[data-baseweb="notification"]{
+    border-radius:12px;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # ------------------------------------------
 # PDF Text Extraction Function
