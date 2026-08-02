@@ -282,6 +282,22 @@ elif selected_page == "📄 Resume Analyzer":
 
         st.progress(ats_score / 100)
 
+        # ------------------------------------------
+        # ATS Dashboard
+        # ------------------------------------------
+        st.subheader("📈 ATS Dashboard")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("ATS Score", f"{ats_score}/100")
+
+        with col2:
+            st.metric("Skills Found", len(found_skills))
+
+        with col3:
+            st.metric("Resume Words", len(resume_text.split()))
+
         if ats_score >= 80:
 
             st.success(
