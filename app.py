@@ -14,6 +14,7 @@ from utils.ats_checker import (
     calculate_ats_score,
     get_score_breakdown
 )
+from modules.cover_letter import cover_letter_page
 
 # ------------------------------------------
 # Configure Streamlit Page
@@ -366,17 +367,6 @@ elif selected_page == "🎯 ATS Checker":
 
 
 # ==========================================
-# Cover Letter Generator
-# ==========================================
-
-elif selected_page == "💼 Cover Letter Generator":
-
-    st.subheader("💼 Cover Letter Generator")
-
-    st.info("Coming Soon...")
-
-
-# ==========================================
 # Interview Preparation
 # ==========================================
 
@@ -396,6 +386,15 @@ elif selected_page == "📊 Resume vs Job Description":
     st.subheader("📊 Resume vs Job Description")
 
     st.info("Coming Soon...")
+
+
+# ==========================================
+# Cover Letter Generator
+# ==========================================
+
+elif selected_page == "💼 Cover Letter Generator":
+
+    cover_letter_page()
 
 
 # ==========================================
