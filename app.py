@@ -24,6 +24,7 @@ st.set_page_config(
     layout="wide"
 )
 
+
 # ------------------------------------------
 # PDF Text Extraction Function
 # ------------------------------------------
@@ -334,9 +335,9 @@ elif selected_page == "📄 Resume Analyzer":
                 "No matching skills found."
             )
 
-        # ------------------------------------------
-        # AI Analysis
-        # ------------------------------------------
+# ------------------------------------------
+# AI Analysis
+# ------------------------------------------
 
         st.subheader("🤖 AI Analysis")
 
