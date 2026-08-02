@@ -16,6 +16,7 @@ from utils.ats_checker import (
 )
 from modules.cover_letter import cover_letter_page
 from modules.interview import interview_page
+from modules.resume_match import resume_match_page
 
 # ------------------------------------------
 # Configure Streamlit Page
@@ -382,9 +383,7 @@ elif selected_page == "🎤 Interview Preparation":
 
 elif selected_page == "📊 Resume vs Job Description":
 
-    st.subheader("📊 Resume vs Job Description")
-
-    st.info("Coming Soon...")
+    resume_match_page()
 
 
 # ==========================================
