@@ -15,6 +15,7 @@ from utils.ats_checker import (
     get_score_breakdown
 )
 from modules.cover_letter import cover_letter_page
+from modules.interview import interview_page
 
 # ------------------------------------------
 # Configure Streamlit Page
@@ -372,9 +373,7 @@ elif selected_page == "🎯 ATS Checker":
 
 elif selected_page == "🎤 Interview Preparation":
 
-    st.subheader("🎤 Interview Preparation")
-
-    st.info("Coming Soon...")
+    interview_page()
 
 
 # ==========================================
