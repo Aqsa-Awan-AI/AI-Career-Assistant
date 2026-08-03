@@ -10,19 +10,44 @@ AI Career Assistant is a Streamlit-based application designed to simplify resume
 
 ---
 
+
 ## ✨ Features
 
-- 📄 Resume PDF Upload
-- 📑 Resume Text Extraction
+- 📄 AI Resume Analyzer
 - 🎯 ATS Score Checker
-- 📊 Resume Statistics Dashboard
-- 🛠 Skills Detection
-- 🤖 AI Resume Analysis (Demo)
-- 💼 Cover Letter Generator (Coming Soon)
-- 🎤 Interview Preparation (Coming Soon)
-- 📊 Resume vs Job Description (Coming Soon)
+- 💼 AI Cover Letter Generator
+- 🎤 Interview Preparation
+- 📊 Resume vs Job Description Matching
+- 🖼️ Professional UI with Feature Illustrations
+- 🤖 AI Career Guidance
 
 ---
+
+## 📸 Screenshots
+
+### 🏠 Home
+
+![Home](screenshots/home.png)
+
+### 📄 Resume Analyzer
+
+![Resume](screenshots/resume.png)
+
+### 🎯 ATS Checker
+
+![ATS](screenshots/ats.png)
+
+### 💼 Cover Letter Generator
+
+![Cover Letter](screenshots/cover_letter.png)
+
+### 🎤 Interview Preparation
+
+![Interview](screenshots/interview.png)
+
+### 📊 Resume vs Job Description
+
+![Resume Match](screenshots/resume_match.png)
 
 ## 🛠️ Tech Stack
 
