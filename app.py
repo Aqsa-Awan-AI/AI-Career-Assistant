@@ -4,9 +4,7 @@
 # Developed by: Aqsa Awan
 # ==========================================
 
-# ------------------------------------------
-# Import Required Libraries
-# ------------------------------------------
+import os
 import streamlit as st
 import pdfplumber
 
@@ -14,32 +12,37 @@ from utils.ats_checker import (
     calculate_ats_score,
     get_score_breakdown
 )
+
 from modules.cover_letter import cover_letter_page
 from modules.interview import interview_page
 from modules.resume_match import resume_match_page
-from modules.interview import interview_page
 
-# ------------------------------------------
-# Configure Streamlit Page
-# ------------------------------------------
+# ==========================================
+# Page Configuration
+# ==========================================
+
 st.set_page_config(
     page_title="AI Career Assistant",
     page_icon="🤖",
     layout="wide"
 )
+
+# ==========================================
+# Custom CSS
+# ==========================================
+
 st.markdown("""
 <style>
 
-/* Main App */
+/* Background */
 .stApp{
-    background: linear-gradient(135deg,#eef4ff,#f9fbff);
+    background:linear-gradient(135deg,#eef4ff,#f8fbff);
 }
 
 /* Main Container */
 .block-container{
-    padding-top:2rem;
-    padding-bottom:2rem;
     max-width:1200px;
+    padding-top:2rem;
 }
 
 /* Sidebar */
@@ -51,54 +54,21 @@ section[data-testid="stSidebar"] *{
     color:white !important;
 }
 
-/* Main Title */
-h1{
-    color:#1e293b !important;
-    font-weight:800 !important;
-    font-size:3rem !important;
-}
-
-/* Sub Headings */
-h2,h3{
-    color:#2563eb !important;
-    font-weight:700 !important;
-}
-
 /* Buttons */
 .stButton>button{
     background:linear-gradient(90deg,#2563eb,#3b82f6);
     color:white;
     border:none;
     border-radius:12px;
-    padding:12px 22px;
-    font-weight:bold;
-    transition:0.3s;
+    padding:12px 20px;
+    font-weight:700;
 }
 
 .stButton>button:hover{
     transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(37,99,235,.35);
 }
 
-/* Text Input */
-.stTextInput>div>div>input{
-    border-radius:12px;
-}
-
-/* Text Area */
-textarea{
-    border-radius:12px !important;
-}
-
-/* File Uploader */
-[data-testid="stFileUploader"]{
-    border:2px dashed #3b82f6;
-    border-radius:15px;
-    padding:15px;
-    background:white;
-}
-
-/* Metrics */
+/* Metric Cards */
 [data-testid="metric-container"]{
     border-radius:15px;
     background:white;
@@ -106,21 +76,14 @@ textarea{
     box-shadow:0 5px 18px rgba(0,0,0,.08);
 }
 
-/* Success Boxes */
-div[data-baseweb="notification"]{
-    border-radius:12px;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
-# ------------------------------------------
-# PDF Text Extraction Function
-# ------------------------------------------
+# ==========================================
+# PDF Reader
+# ==========================================
+
 def extract_pdf_text(uploaded_file):
-    """
-    Extract text from uploaded PDF.
-    """
 
     text = ""
 
@@ -136,82 +99,53 @@ def extract_pdf_text(uploaded_file):
     return text
 
 
-# ------------------------------------------
-# Temporary AI Resume Analyzer
-# ------------------------------------------
+# ==========================================
+# Temporary AI Analyzer
+# ==========================================
+
 def analyze_resume_with_ai(resume_text):
-    """
-    Temporary AI analysis.
-    Gemini API will be connected later.
-    """
 
     return """
 # 📊 Resume Analysis
 
 ### ✅ Resume Score
-**78 / 100**
+78 / 100
 
-## 💪 Strengths
+### 💪 Strengths
+- Good Resume Structure
+- Projects Included
+- Education Section Present
 
-- Good overall resume structure.
-- Projects section is included.
-- Education details are clear.
-- Resume is readable.
+### ⚠️ Improvements
+- Add more technical skills
+- Improve ATS keywords
+- Mention achievements
+- Add LinkedIn & GitHub
 
-## ⚠️ Areas for Improvement
-
-- Add more technical skills.
-- Mention measurable achievements.
-- Improve ATS keywords.
-- Add GitHub profile.
-- Add LinkedIn profile.
-
-## 🚀 ATS Suggestions
-
-- Use action verbs.
-- Keep formatting simple.
-- Tailor resume for each job.
-- Include relevant keywords from job descriptions.
-
----
-
-This is a demo AI analysis.
-Gemini AI integration will be enabled later.
+### 🚀 ATS Tips
+- Tailor resume for every job
+- Use action verbs
+- Keep formatting simple
 """
 
 
 # ==========================================
-# Main Page
+# Landing Page
 # ==========================================
 
 st.title("🤖 AI Career Assistant")
 
-st.markdown(
-    """
-Welcome to the next-generation **AI Career Assistant**.
+feature1, feature2 = st.columns(2)
 
-This application helps students and professionals improve their careers using Artificial Intelligence.
-"""
-)
-
-# ------------------------------------------
-# Features
-# ------------------------------------------
-
-feature_col1, feature_col2 = st.columns(2)
-
-with feature_col1:
-
-    st.success("📄 Resume Analysis")
-    st.success("🎯 ATS Score Checker")
+with feature1:
+    st.success("📄 Resume Analyzer")
+    st.success("🎯 ATS Checker")
     st.success("💼 Cover Letter Generator")
 
-with feature_col2:
-
+with feature2:
     st.success("🎤 Interview Preparation")
-    st.success("📊 Resume vs Job Description")
-    st.success("🤖 AI Career Guidance")
-
+    st.success("📊 Resume Match")
+    st.success("🤖 Career Guidance")
 
 # ==========================================
 # Sidebar
@@ -222,7 +156,7 @@ with st.sidebar:
     st.header("📋 Navigation")
 
     selected_page = st.radio(
-        "Choose a feature:",
+        "Choose a Feature",
         [
             "🏠 Home",
             "📄 Resume Analyzer",
@@ -233,25 +167,37 @@ with st.sidebar:
         ]
     )
 
-
 # ==========================================
 # Home
 # ==========================================
 
 if selected_page == "🏠 Home":
 
-    st.subheader("🏠 Home")
-
-    st.info(
-        "Welcome to the AI Career Assistant!"
+    st.image(
+        "assets/home.png",
+        use_container_width=True
     )
 
+    st.subheader("🏠 AI Career Assistant")
+
+    st.markdown("""
+### Build Smarter Resumes. Land Better Jobs. 🚀
+
+Welcome to your AI-powered career assistant.
+
+Use the sidebar to explore all AI tools.
+""")
 
 # ==========================================
 # Resume Analyzer
 # ==========================================
 
 elif selected_page == "📄 Resume Analyzer":
+
+    st.image(
+        "assets/resume.png",
+        use_container_width=True
+    )
 
     st.subheader("📄 Resume Analyzer")
 
@@ -264,10 +210,7 @@ elif selected_page == "📄 Resume Analyzer":
 
         st.success("✅ Resume uploaded successfully!")
 
-        st.write(
-            "**File Name:**",
-            uploaded_resume.name
-        )
+        st.write("**File Name:**", uploaded_resume.name)
 
         st.write(
             "**File Size:**",
@@ -275,15 +218,7 @@ elif selected_page == "📄 Resume Analyzer":
             "KB"
         )
 
-        # ------------------------------------------
-        # Extract Resume Text
-        # ------------------------------------------
-
         resume_text = extract_pdf_text(uploaded_resume)
-
-        # ------------------------------------------
-        # ATS Score
-        # ------------------------------------------
 
         ats_score, found_skills = calculate_ats_score(
             resume_text
@@ -293,11 +228,7 @@ elif selected_page == "📄 Resume Analyzer":
             resume_text
         )
 
-        # ------------------------------------------
-        # Resume Text
-        # ------------------------------------------
-
-        st.subheader("📄 Extracted Resume Text")
+        st.subheader("📄 Extracted Resume")
 
         st.text_area(
             "Resume Content",
@@ -305,134 +236,73 @@ elif selected_page == "📄 Resume Analyzer":
             height=300
         )
 
-        # ------------------------------------------
-        # Resume Statistics
-        # ------------------------------------------
-
         st.subheader("📊 Resume Statistics")
 
-        stat_col1, stat_col2, stat_col3 = st.columns(3)
+        col1, col2, col3 = st.columns(3)
 
-        with stat_col1:
+        with col1:
             st.metric(
-                "Total Words",
+                "Words",
                 len(resume_text.split())
             )
 
-        with stat_col2:
+        with col2:
             st.metric(
                 "Characters",
                 len(resume_text)
             )
 
-        with stat_col3:
+        with col3:
             st.metric(
-                "Skills Found",
+                "Skills",
                 len(found_skills)
             )
 
-        # ------------------------------------------
-        # Score Breakdown
-        # ------------------------------------------
-
         st.subheader("📋 Score Breakdown")
 
-        breakdown_col1, breakdown_col2 = st.columns(2)
+        left, right = st.columns(2)
 
-        with breakdown_col1:
-
+        with left:
             st.info(
-                f"🛠 Technical Skills: {breakdown['Technical Skills']}/50"
+                f"🛠 Technical Skills : {breakdown['Technical Skills']}/50"
+            )
+            st.info(
+                f"🎓 Education : {breakdown['Education']}/15"
             )
 
+        with right:
             st.info(
-                f"🎓 Education: {breakdown['Education']}/15"
+                f"📁 Projects : {breakdown['Projects']}/20"
             )
-
-        with breakdown_col2:
-
             st.info(
-                f"📁 Projects: {breakdown['Projects']}/20"
+                f"💼 Experience : {breakdown['Experience']}/15"
             )
-
-            st.info(
-                f"💼 Experience: {breakdown['Experience']}/15"
-            )
-
-        # ------------------------------------------
-        # ATS Score
-        # ------------------------------------------
 
         st.subheader("🎯 ATS Score")
 
         st.metric(
-            label="Overall ATS Score",
-            value=f"{ats_score}/100"
+            "Overall Score",
+            f"{ats_score}/100"
         )
 
         st.progress(ats_score / 100)
-
-        # ------------------------------------------
-        # ATS Dashboard
-        # ------------------------------------------
-        st.subheader("📈 ATS Dashboard")
-
-        col1, col2, col3 = st.columns(3)
-
-        with col1:
-            st.metric("ATS Score", f"{ats_score}/100")
-
-        with col2:
-            st.metric("Skills Found", len(found_skills))
-
-        with col3:
-            st.metric("Resume Words", len(resume_text.split()))
-
-        if ats_score >= 80:
-
-            st.success(
-                "🎉 Excellent! Your resume is highly ATS-friendly."
-            )
-
-        elif ats_score >= 60:
-
-            st.warning(
-                "👍 Good resume, but there is room for improvement."
-            )
-
-        else:
-
-            st.error(
-                "⚠️ Your resume needs significant ATS improvements."
-            )
-
-        # ------------------------------------------
-        # Skills Found
-        # ------------------------------------------
 
         st.subheader("🛠 Skills Found")
 
         if found_skills:
 
             for skill in found_skills:
-
                 st.success(skill.title())
 
         else:
 
-            st.warning(
-                "No matching skills found."
-            )
-
-# ------------------------------------------
-# AI Analysis
-# ------------------------------------------
+            st.warning("No matching skills found.")
 
         st.subheader("🤖 AI Analysis")
 
         if st.button("Analyze Resume"):
 
-            st.info("Analyzing resume...")
+            st.info("Analyzing Resume...")
 
             result = analyze_resume_with_ai(
                 resume_text
@@ -449,9 +319,30 @@ elif selected_page == "📄 Resume Analyzer":
 
 elif selected_page == "🎯 ATS Checker":
 
+    st.image(
+        "assets/ats.png",
+        use_container_width=True
+    )
+
     st.subheader("🎯 ATS Checker")
 
-    st.info("Coming Soon...")
+    st.info(
+        "🚧 This feature is coming soon."
+    )
+
+
+# ==========================================
+# Cover Letter Generator
+# ==========================================
+
+elif selected_page == "💼 Cover Letter Generator":
+
+    st.image(
+        "assets/cover_letter.png",
+        use_container_width=True        
+    )
+
+    cover_letter_page()
 
 
 # ==========================================
@@ -459,6 +350,11 @@ elif selected_page == "🎯 ATS Checker":
 # ==========================================
 
 elif selected_page == "🎤 Interview Preparation":
+
+    st.image(
+        "assets/interview.png",
+        use_container_width=True
+    )
 
     interview_page()
 
@@ -469,17 +365,12 @@ elif selected_page == "🎤 Interview Preparation":
 
 elif selected_page == "📊 Resume vs Job Description":
 
+    st.image(
+        "assets/resume_match.png",
+        use_container_width=True
+    )
+
     resume_match_page()
-
-
-# ==========================================
-# Cover Letter Generator
-# ==========================================
-
-elif selected_page == "💼 Cover Letter Generator":
-
-    cover_letter_page()
-
 
 # ==========================================
 # Footer
@@ -487,6 +378,12 @@ elif selected_page == "💼 Cover Letter Generator":
 
 st.divider()
 
-st.caption(
-    "© 2026 AI Career Assistant | Developed by Aqsa Awan"
+st.markdown(
+    """
+<div style="text-align:center;color:gray;font-size:15px;">
+© 2026 <b>AI Career Assistant</b> |
+Developed with ❤️ by <b>Aqsa Awan</b>
+</div>
+""",
+unsafe_allow_html=True
 )
