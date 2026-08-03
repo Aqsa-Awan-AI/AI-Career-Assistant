@@ -49,6 +49,8 @@ AI Career Assistant is a Streamlit-based application designed to simplify resume
 
 ![Resume Match](screenshots/resume_match.png)
 
+
+
 ## 🛠️ Tech Stack
 
 - Python

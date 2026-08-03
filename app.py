@@ -173,144 +173,82 @@ with st.sidebar:
 
 if selected_page == "🏠 Home":
 
-    st.image(
-        "assets/home.png",
-        use_container_width=True
-    )
+    left, right = st.columns([1.2, 1])
 
-    st.subheader("🏠 AI Career Assistant")
+    with left:
 
-    st.markdown("""
-### Build Smarter Resumes. Land Better Jobs. 🚀
+        st.title("🤖 AI Career Assistant")
 
-Welcome to your AI-powered career assistant.
+        st.markdown("""
+### Build Smarter Resumes. Land Better Jobs.
 
-Use the sidebar to explore all AI tools.
+Your all-in-one AI-powered platform to:
+
+✅ Analyze resumes
+
+✅ Improve ATS Score
+
+✅ Generate Cover Letters
+
+✅ Practice Interviews
+
+✅ Match Resume with Job Descriptions
+
+---
+
+Start exploring using the sidebar.
 """)
 
-# ==========================================
-# Resume Analyzer
-# ==========================================
+        st.success("🚀 Powered by Artificial Intelligence")
 
-elif selected_page == "📄 Resume Analyzer":
+    with right:
 
-    st.image(
-        "assets/resume.png",
-        use_container_width=True
-    )
-
-    st.subheader("📄 Resume Analyzer")
-
-    uploaded_resume = st.file_uploader(
-        "Upload your Resume (PDF)",
-        type=["pdf"]
-    )
-
-    if uploaded_resume is not None:
-
-        st.success("✅ Resume uploaded successfully!")
-
-        st.write("**File Name:**", uploaded_resume.name)
-
-        st.write(
-            "**File Size:**",
-            round(uploaded_resume.size / 1024, 2),
-            "KB"
+        st.image(
+            "assets/home.png",
+            use_container_width=True
         )
 
-        resume_text = extract_pdf_text(uploaded_resume)
+    st.markdown("---")
 
-        ats_score, found_skills = calculate_ats_score(
-            resume_text
-        )
+    st.subheader("✨ Explore Features")
 
-        breakdown = get_score_breakdown(
-            resume_text
-        )
+    space1, main, space2 = st.columns([1, 6, 1])
 
-        st.subheader("📄 Extracted Resume")
-
-        st.text_area(
-            "Resume Content",
-            resume_text,
-            height=300
-        )
-
-        st.subheader("📊 Resume Statistics")
+    with main:
 
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.metric(
-                "Words",
-                len(resume_text.split())
+            st.info(
+                "📄 Resume Analyzer\n\nAnalyze your resume and receive AI-powered suggestions."
             )
 
         with col2:
-            st.metric(
-                "Characters",
-                len(resume_text)
+            st.info(
+                "🎯 ATS Checker\n\nCheck how ATS-friendly your resume is."
             )
 
         with col3:
-            st.metric(
-                "Skills",
-                len(found_skills)
-            )
-
-        st.subheader("📋 Score Breakdown")
-
-        left, right = st.columns(2)
-
-        with left:
             st.info(
-                f"🛠 Technical Skills : {breakdown['Technical Skills']}/50"
+                "💼 Cover Letter\n\nGenerate professional cover letters instantly."
             )
+
+        col4, col5, col6 = st.columns(3)
+
+        with col4:
             st.info(
-                f"🎓 Education : {breakdown['Education']}/15"
+                "🎤 Interview Prep\n\nPractice common interview questions."
             )
 
-        with right:
+        with col5:
             st.info(
-                f"📁 Projects : {breakdown['Projects']}/20"
+                "📊 Resume Match\n\nCompare your resume with any job description."
             )
+
+        with col6:
             st.info(
-                f"💼 Experience : {breakdown['Experience']}/15"
+                "🤖 AI Career Guide\n\nReceive personalized career recommendations."
             )
-
-        st.subheader("🎯 ATS Score")
-
-        st.metric(
-            "Overall Score",
-            f"{ats_score}/100"
-        )
-
-        st.progress(ats_score / 100)
-
-        st.subheader("🛠 Skills Found")
-
-        if found_skills:
-
-            for skill in found_skills:
-                st.success(skill.title())
-
-        else:
-
-            st.warning("No matching skills found.")
-
-        st.subheader("🤖 AI Analysis")
-
-        if st.button("Analyze Resume"):
-
-            st.info("Analyzing Resume...")
-
-            result = analyze_resume_with_ai(
-                resume_text
-            )
-
-            st.success("Analysis Completed!")
-
-            st.markdown(result)
 
 
 # ==========================================
@@ -326,9 +264,7 @@ elif selected_page == "🎯 ATS Checker":
 
     st.subheader("🎯 ATS Checker")
 
-    st.info(
-        "🚧 This feature is coming soon."
-    )
+    st.info("🚧 This feature is coming soon.")
 
 
 # ==========================================
@@ -339,7 +275,7 @@ elif selected_page == "💼 Cover Letter Generator":
 
     st.image(
         "assets/cover_letter.png",
-        use_container_width=True        
+        use_container_width=True
     )
 
     cover_letter_page()
@@ -372,6 +308,7 @@ elif selected_page == "📊 Resume vs Job Description":
 
     resume_match_page()
 
+
 # ==========================================
 # Footer
 # ==========================================
@@ -385,5 +322,5 @@ st.markdown(
 Developed with ❤️ by <b>Aqsa Awan</b>
 </div>
 """,
-unsafe_allow_html=True
+    unsafe_allow_html=True
 )
