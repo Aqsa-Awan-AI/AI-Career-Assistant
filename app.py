@@ -7,6 +7,14 @@
 import os
 import streamlit as st
 import pdfplumber
+from google import genai
+
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
+
+for model in client.models.list():
+    print(model.name)
 
 from utils.ats_checker import (
     calculate_ats_score,
@@ -105,28 +113,40 @@ def extract_pdf_text(uploaded_file):
 
 def analyze_resume_with_ai(resume_text):
 
-    return """
-# 📊 Resume Analysis
+    prompt = f"""
+You are an expert ATS Resume Reviewer and Career Coach.
 
-### ✅ Resume Score
-78 / 100
+Analyze the following resume professionally.
 
-### 💪 Strengths
-- Good Resume Structure
-- Projects Included
-- Education Section Present
+Return your response in Markdown.
 
-### ⚠️ Improvements
-- Add more technical skills
-- Improve ATS keywords
-- Mention achievements
-- Add LinkedIn & GitHub
+Include these sections:
 
-### 🚀 ATS Tips
-- Tailor resume for every job
-- Use action verbs
-- Keep formatting simple
+# ATS Score (0-100)
+
+# Strengths
+
+# Weaknesses
+
+# Missing Skills
+
+# Suggestions for Improvement
+
+# Recommended Job Roles
+
+# Final Verdict
+
+Resume:
+
+{resume_text}
 """
+
+    response = client.models.generate_content(
+    model="models/gemini-3.5-flash",
+    contents=prompt
+)
+
+    return response.text
 
 
 # ==========================================
@@ -173,7 +193,7 @@ with st.sidebar:
 
 if selected_page == "🏠 Home":
 
-    left, right = st.columns([1.2, 1])
+    left, right = st.columns([1, 1.2])
 
     with left:
 
@@ -203,7 +223,7 @@ Start exploring using the sidebar.
 
     with right:
 
-        st.image(
+            st.image(
             "assets/home.png",
             use_container_width=True
         )
@@ -249,6 +269,52 @@ Start exploring using the sidebar.
             st.info(
                 "🤖 AI Career Guide\n\nReceive personalized career recommendations."
             )
+
+# ==========================================
+# Resume Analyzer
+# ==========================================
+
+elif selected_page == "📄 Resume Analyzer":
+
+    st.image(
+        "assets/resume.png",
+        use_container_width=True
+    )
+
+    st.subheader("📄 Resume Analyzer")
+
+    uploaded_resume = st.file_uploader(
+        "Upload your Resume (PDF)",
+        type=["pdf"]
+    )
+
+    if uploaded_resume is not None:
+
+        st.success("✅ Resume uploaded successfully!")
+
+        resume_text = extract_pdf_text(uploaded_resume)
+
+        st.subheader("📄 Extracted Resume")
+
+        st.text_area(
+            "Resume Content",
+            resume_text,
+            height=300
+        )
+
+        st.markdown("---")
+
+        st.subheader("🤖 AI Resume Analysis")
+
+        if st.button("Analyze Resume"):
+
+            with st.spinner("Analyzing your resume using Gemini AI..."):
+
+                result = analyze_resume_with_ai(resume_text)
+
+            st.success("✅ Analysis Completed!")
+
+            st.markdown(result)
 
 
 # ==========================================
