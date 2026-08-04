@@ -13,9 +13,6 @@ client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
-for model in client.models.list():
-    print(model.name)
-
 from utils.ats_checker import (
     calculate_ats_score,
     get_score_breakdown
