@@ -9,6 +9,17 @@ import streamlit as st
 import pdfplumber
 from google import genai
 
+# ==========================================
+# Page Configuration
+# (MUST be the very first Streamlit command)
+# ==========================================
+
+st.set_page_config(
+    page_title="AI Career Assistant",
+    page_icon="🤖",
+    layout="wide"
+)
+
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
@@ -21,16 +32,7 @@ from utils.ats_checker import (
 from modules.cover_letter import cover_letter_page
 from modules.interview import interview_page
 from modules.resume_match import resume_match_page
-
-# ==========================================
-# Page Configuration
-# ==========================================
-
-st.set_page_config(
-    page_title="AI Career Assistant",
-    page_icon="🤖",
-    layout="wide"
-)
+from modules.career_guidance import career_guidance_page
 
 # ==========================================
 # Custom CSS
@@ -139,9 +141,9 @@ Resume:
 """
 
     response = client.models.generate_content(
-    model="models/gemini-3.5-flash",
-    contents=prompt
-)
+        model="gemini-3.6-flash",
+        contents=prompt
+    )
 
     return response.text
 
@@ -180,7 +182,8 @@ with st.sidebar:
             "🎯 ATS Checker",
             "💼 Cover Letter Generator",
             "🎤 Interview Preparation",
-            "📊 Resume vs Job Description"
+            "📊 Resume vs Job Description",
+            "🤖 Career Guidance"
         ]
     )
 
@@ -220,7 +223,7 @@ Start exploring using the sidebar.
 
     with right:
 
-            st.image(
+        st.image(
             "assets/home.png",
             use_container_width=True
         )
@@ -327,7 +330,85 @@ elif selected_page == "🎯 ATS Checker":
 
     st.subheader("🎯 ATS Checker")
 
-    st.info("🚧 This feature is coming soon.")
+    st.write(
+        "Upload your resume and check how strong it is according to the "
+        "ATS (Applicant Tracking System)."
+    )
+
+    uploaded_resume_ats = st.file_uploader(
+        "Upload your Resume (PDF)",
+        type=["pdf"],
+        key="ats_uploader"
+    )
+
+    if uploaded_resume_ats is not None:
+
+        st.success("✅ Resume uploaded successfully!")
+
+        resume_text_ats = extract_pdf_text(uploaded_resume_ats)
+
+        if st.button("🎯 Check ATS Score"):
+
+            with st.spinner("Calculating ATS Score..."):
+
+                score, found_skills = calculate_ats_score(resume_text_ats)
+                breakdown = get_score_breakdown(resume_text_ats)
+
+            st.markdown("---")
+
+            # Overall Score
+            col1, col2 = st.columns([1, 2])
+
+            with col1:
+                st.metric("📊 Overall ATS Score", f"{score}/100")
+
+            with col2:
+                st.progress(score / 100)
+
+                if score >= 80:
+                    st.success("Excellent! Your resume is highly ATS-friendly.")
+                elif score >= 50:
+                    st.warning("Decent score, but there's room for improvement.")
+                else:
+                    st.error("Low ATS score. Consider adding more relevant keywords.")
+
+            st.markdown("---")
+
+            # Score Breakdown
+            st.subheader("📋 Score Breakdown")
+
+            b1, b2, b3, b4 = st.columns(4)
+
+            with b1:
+                st.metric("🛠 Technical Skills", f"{breakdown['Technical Skills']}/50")
+
+            with b2:
+                st.metric("🎓 Education", f"{breakdown['Education']}/15")
+
+            with b3:
+                st.metric("💼 Projects", f"{breakdown['Projects']}/20")
+
+            with b4:
+                st.metric("📈 Experience", f"{breakdown['Experience']}/15")
+
+            st.markdown("---")
+
+            # Found Skills
+            st.subheader("✅ Skills Detected in Your Resume")
+
+            if found_skills:
+                skill_cols = st.columns(len(found_skills)) if len(found_skills) <= 5 else st.columns(5)
+                for i, skill in enumerate(found_skills):
+                    with skill_cols[i % len(skill_cols)]:
+                        st.info(f"✔ {skill.title()}")
+            else:
+                st.warning(
+                    "No common technical skills detected. Try adding relevant "
+                    "keywords like Python, SQL, Machine Learning, etc."
+                )
+
+    else:
+        st.info("👆 Please upload your resume to get started.")
 
 
 # ==========================================
@@ -370,6 +451,16 @@ elif selected_page == "📊 Resume vs Job Description":
     )
 
     resume_match_page()
+
+# ==========================================
+# Career Guidance
+# ==========================================
+
+elif selected_page == "🤖 Career Guidance":
+
+    st.subheader("🤖 AI Career Guidance")
+
+    career_guidance_page()
 
 
 # ==========================================

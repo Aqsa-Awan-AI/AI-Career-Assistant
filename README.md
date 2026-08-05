@@ -6,20 +6,19 @@ An AI-powered web application that helps students and professionals improve thei
 
 ## 📌 Project Overview
 
-AI Career Assistant is a Streamlit-based application designed to simplify resume analysis and career preparation. It extracts resume content from PDF files, calculates an ATS score, and provides intelligent feedback to help users build stronger resumes.
+AI Career Assistant is a Streamlit-based application designed to simplify resume analysis and career preparation. It extracts resume content from PDF files, calculates an ATS score, generates cover letters, preps users for interviews, matches resumes against job descriptions, and provides AI-powered career guidance — all powered by Google's Gemini AI.
 
 ---
 
-
 ## ✨ Features
 
-- 📄 AI Resume Analyzer
-- 🎯 ATS Score Checker
+- 📄 AI Resume Analyzer (Gemini-powered feedback)
+- 🎯 ATS Score Checker with detailed breakdown
 - 💼 AI Cover Letter Generator
-- 🎤 Interview Preparation
+- 🎤 AI-Powered Interview Preparation
 - 📊 Resume vs Job Description Matching
+- 🤖 AI Career Guidance (personalized career path recommendations)
 - 🖼️ Professional UI with Feature Illustrations
-- 🤖 AI Career Guidance
 
 ---
 
@@ -49,12 +48,13 @@ AI Career Assistant is a Streamlit-based application designed to simplify resume
 
 ![Resume Match](screenshots/resume_match.png)
 
-
+---
 
 ## 🛠️ Tech Stack
 
 - Python
 - Streamlit
+- Google Gemini AI (google-genai)
 - PDFPlumber
 - Git & GitHub
 
@@ -62,16 +62,23 @@ AI Career Assistant is a Streamlit-based application designed to simplify resume
 
 ## 📂 Project Structure
 
-```
 AI-Career-Assistant/
 │
 ├── app.py
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
+├── .streamlit/
+│ ├── config.toml
+│ └── secrets.toml
+├── assets/
+├── modules/
+│ ├── cover_letter.py
+│ ├── interview.py
+│ ├── resume_match.py
+│ └── career_guidance.py
 └── utils/
-    └── ats_checker.py
-```
+└── ats_checker.py
 
 ---
 
@@ -95,6 +102,12 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
+Add your Gemini API key in `.streamlit/secrets.toml`:
+
+```toml
+GEMINI_API_KEY = "your_api_key_here"
+```
+
 Run the application:
 
 ```bash
@@ -105,23 +118,23 @@ streamlit run app.py
 
 ## 🎯 Current Progress
 
-- ✅ Resume PDF Upload
-- ✅ Resume Text Extraction
-- ✅ ATS Score Calculation
-- ✅ Resume Statistics
+- ✅ Resume PDF Upload & Text Extraction
+- ✅ AI Resume Analysis (Gemini)
+- ✅ ATS Score Calculation with Breakdown
 - ✅ Skills Detection
-- ✅ Demo AI Resume Analysis
+- ✅ AI Cover Letter Generator
+- ✅ AI Interview Question Generator
+- ✅ Resume vs Job Description Matching
+- ✅ AI Career Guidance
 
 ---
 
 ## 🔮 Future Improvements
 
-- Gemini AI Integration
-- Cover Letter Generator
-- Resume vs Job Description Matching
-- Interview Question Generator
-- Career Roadmap Generator
-- Resume Download Feature
+- Resume Download Feature (PDF export)
+- Multi-language Resume Support
+- User Authentication & Saved History
+- Resume Builder Templates
 
 ---
 

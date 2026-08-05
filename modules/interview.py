@@ -1,6 +1,6 @@
+import os
 import streamlit as st
 from google import genai
-import os
 
 QUESTIONS = {
     "Python": [
@@ -32,6 +32,8 @@ QUESTIONS = {
         "Where do you see yourself in 5 years?"
     ]
 }
+
+
 def generate_ai_interview(role, experience, interview_type):
 
     client = genai.Client(
@@ -39,41 +41,40 @@ def generate_ai_interview(role, experience, interview_type):
     )
 
     prompt = f"""
-    You are an expert technical interviewer.
+You are an expert interviewer and career coach.
 
-    Generate a professional interview for:
+Generate a professional interview for:
 
-    Job Role: {role}
-    : {experience}
-    Interview Type: {interview_type}
+Job Role: {role}
+Experience: {experience}
+Interview Type: {interview_type}
 
-    Provide:
+Generate exactly 5 interview questions.
 
-    # Interview Questions
+For EACH question provide:
 
-    For each of the 5 questions include:
+Question:
+Ideal Answer:
+Interview Tip:
 
-    Question:
-    Ideal Answer:
-    Interview Tip:
+Finally provide:
 
-    Finally provide:
+# Overall Interview Advice
 
-    # Overall Interview Advice
-
-    Return everything in Markdown.
-    """
+Return the response in clean Markdown format.
+"""
 
     response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=prompt
-    )
+    model="gemini-3.6-flash",
+    contents=prompt,
+)
 
     return response.text
 
 
 def interview_page():
 
+    
     st.subheader("🎤 Interview Preparation")
 
     category = st.selectbox(
@@ -87,49 +88,57 @@ def interview_page():
 
     for i, question in enumerate(QUESTIONS[category], start=1):
         st.info(f"{i}. {question}")
+
     st.divider()
 
-st.subheader("🤖 AI Interview Coach")
+    st.subheader("🤖 AI Interview Coach")
 
-job_role = st.text_input(
-    "Job Role",
-    placeholder="e.g. AI Engineer"
-)
+    job_role = st.text_input(
+        "Job Role",
+        placeholder="e.g. AI Engineer"
+    )
 
-experience = st.selectbox(
-    "Experience Level",
-    [
-        "Fresher",
-        "1-3 Years",
-        "3-5 Years",
-        "5+ Years"
-    ]
-)
+    experience = st.selectbox(
+        "Experience Level",
+        [
+            "Fresher",
+            "1-3 Years",
+            "3-5 Years",
+            "5+ Years"
+        ]
+    )
 
-interview_type = st.selectbox(
-    "Interview Type",
-    [
-        "Technical",
-        "HR",
-        "Behavioral",
-        "Mixed"
-    ]
-)
+    interview_type = st.selectbox(
+        "Interview Type",
+        [
+            "Technical",
+            "HR",
+            "Behavioral",
+            "Mixed"
+        ]
+    )
 
-if st.button("🚀 Generate AI Interview"):
+    if st.button("🚀 Generate AI Interview"):
 
-    if job_role.strip() == "":
-        st.warning("Please enter a job role.")
-    else:
+        if job_role.strip() == "":
+            st.warning("Please enter a Job Role.")
 
-        with st.spinner("Generating Interview..."):
+        else:
 
-            result = generate_ai_interview(
-                job_role,
-                experience,
-                interview_type
-            )
+            with st.spinner("Generating AI Interview..."):
 
-        st.success("Interview Generated Successfully!")
+                try:
 
-        st.markdown(result)
+                    result = generate_ai_interview(
+                        job_role,
+                        experience,
+                        interview_type
+                    )
+
+                    st.success("✅ AI Interview Generated Successfully!")
+
+                    st.markdown(result)
+
+                except Exception as e:
+
+                    st.error(f"Error: {e}")
