@@ -193,7 +193,7 @@ with st.sidebar:
 
 if selected_page == "🏠 Home":
 
-    left, right = st.columns([1, 1.2])
+    left, right = st.columns([1, 1.6])
 
     with left:
 
@@ -290,9 +290,17 @@ elif selected_page == "📄 Resume Analyzer":
 
     if uploaded_resume is not None:
 
-        st.success("✅ Resume uploaded successfully!")
+        try:
+            resume_text = extract_pdf_text(uploaded_resume)
+        except Exception as e:
+            st.error("⚠️ Could not read this PDF. Please make sure it's not corrupted or password-protected.")
+            st.stop()
 
-        resume_text = extract_pdf_text(uploaded_resume)
+        if not resume_text.strip():
+            st.warning("⚠️ No readable text found in this PDF. It may be a scanned image — try a text-based PDF instead.")
+            st.stop()
+
+        st.success("✅ Resume uploaded successfully!")
 
         st.subheader("📄 Extracted Resume")
 
@@ -310,11 +318,17 @@ elif selected_page == "📄 Resume Analyzer":
 
             with st.spinner("Analyzing your resume using Gemini AI..."):
 
-                result = analyze_resume_with_ai(resume_text)
+                try:
+                    result = analyze_resume_with_ai(resume_text)
+                    st.success("✅ Analysis Completed!")
+                    st.markdown(result)
 
-            st.success("✅ Analysis Completed!")
-
-            st.markdown(result)
+                except Exception as e:
+                    st.error(
+                        "⚠️ Something went wrong while analyzing your resume. "
+                        "Please try again in a moment."
+                    )
+                    st.caption(f"Technical details: {e}")
 
 
 # ==========================================
@@ -343,9 +357,17 @@ elif selected_page == "🎯 ATS Checker":
 
     if uploaded_resume_ats is not None:
 
-        st.success("✅ Resume uploaded successfully!")
+        try:
+            resume_text_ats = extract_pdf_text(uploaded_resume_ats)
+        except Exception as e:
+            st.error("⚠️ Could not read this PDF. Please make sure it's not corrupted or password-protected.")
+            st.stop()
 
-        resume_text_ats = extract_pdf_text(uploaded_resume_ats)
+        if not resume_text_ats.strip():
+            st.warning("⚠️ No readable text found in this PDF. It may be a scanned image — try a text-based PDF instead.")
+            st.stop()
+
+        st.success("✅ Resume uploaded successfully!")
 
         if st.button("🎯 Check ATS Score"):
 
@@ -458,10 +480,7 @@ elif selected_page == "📊 Resume vs Job Description":
 
 elif selected_page == "🤖 Career Guidance":
 
-    st.subheader("🤖 AI Career Guidance")
-
     career_guidance_page()
-
 
 # ==========================================
 # Footer
