@@ -101,6 +101,13 @@ def career_guidance_page():
 
                     st.markdown(result)
 
+                    st.download_button(
+                        label="📥 Download Career Guidance Report",
+                        data=result,
+                        file_name="Career_Guidance_Report.txt",
+                        mime="text/plain"
+                    )
+
                 except Exception as e:
 
                     st.error(f"Error: {e}")

@@ -90,6 +90,7 @@ section[data-testid="stSidebar"] *{
 # PDF Reader
 # ==========================================
 
+@st.cache_data(show_spinner=False)
 def extract_pdf_text(uploaded_file):
 
     text = ""
@@ -323,6 +324,13 @@ elif selected_page == "📄 Resume Analyzer":
                     st.success("✅ Analysis Completed!")
                     st.markdown(result)
 
+                    st.download_button(
+                        label="📥 Download Analysis Report",
+                        data=result,
+                        file_name="Resume_Analysis_Report.txt",
+                        mime="text/plain"
+                    )
+
                 except Exception as e:
                     st.error(
                         "⚠️ Something went wrong while analyzing your resume. "
@@ -429,8 +437,32 @@ elif selected_page == "🎯 ATS Checker":
                     "keywords like Python, SQL, Machine Learning, etc."
                 )
 
+            st.markdown("---")
+
+            ats_report = f"""ATS SCORE REPORT
+==================
+
+Overall Score: {score}/100
+
+Score Breakdown:
+- Technical Skills: {breakdown['Technical Skills']}/50
+- Education: {breakdown['Education']}/15
+- Projects: {breakdown['Projects']}/20
+- Experience: {breakdown['Experience']}/15
+
+Skills Detected: {', '.join(found_skills) if found_skills else 'None'}
+"""
+
+            st.download_button(
+                label="📥 Download ATS Report",
+                data=ats_report,
+                file_name="ATS_Score_Report.txt",
+                mime="text/plain"
+            )
+
     else:
         st.info("👆 Please upload your resume to get started.")
+                
 
 
 # ==========================================

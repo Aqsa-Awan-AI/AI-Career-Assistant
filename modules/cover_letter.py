@@ -60,3 +60,10 @@ Sincerely,
                 letter,
                 height=350
             )
+
+            st.download_button(
+                label="📥 Download Cover Letter",
+                data=letter,
+                file_name=f"Cover_Letter_{company.replace(' ', '_')}.txt",
+                mime="text/plain"
+            )

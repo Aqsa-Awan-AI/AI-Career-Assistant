@@ -118,14 +118,15 @@ streamlit run app.py
 
 ## 🎯 Current Progress
 
-- ✅ Resume PDF Upload & Text Extraction
-- ✅ AI Resume Analysis (Gemini)
-- ✅ ATS Score Calculation with Breakdown
+- ✅ Resume PDF Upload & Text Extraction (with caching for performance)
+- ✅ AI Resume Analysis (Gemini) with downloadable report
+- ✅ ATS Score Calculation with Breakdown + downloadable report
 - ✅ Skills Detection
-- ✅ AI Cover Letter Generator
+- ✅ AI Cover Letter Generator with download option
 - ✅ AI Interview Question Generator
 - ✅ Resume vs Job Description Matching
-- ✅ AI Career Guidance
+- ✅ AI Career Guidance with downloadable report
+- ✅ Graceful error handling for corrupted/unreadable PDFs and API failures
 
 ---
 
