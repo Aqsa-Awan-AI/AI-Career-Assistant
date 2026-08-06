@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 from google import genai
+from utils.ai_helper import generate_with_fallback
 
 QUESTIONS = {
     "Python": [
@@ -36,10 +37,6 @@ QUESTIONS = {
 
 def generate_ai_interview(role, experience, interview_type):
 
-    client = genai.Client(
-        api_key=os.getenv("GEMINI_API_KEY")
-    )
-
     prompt = f"""
 You are an expert interviewer and career coach.
 
@@ -64,12 +61,7 @@ Finally provide:
 Return the response in clean Markdown format.
 """
 
-    response = client.models.generate_content(
-    model="gemini-3.6-flash",
-    contents=prompt,
-)
-
-    return response.text
+    return generate_with_fallback(prompt)
 
 
 def interview_page():

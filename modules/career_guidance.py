@@ -1,13 +1,10 @@
 import os
 import streamlit as st
 from google import genai
+from utils.ai_helper import generate_with_fallback
 
 
 def generate_career_guidance(skills, interests, education, experience_level):
-
-    client = genai.Client(
-        api_key=os.getenv("GEMINI_API_KEY")
-    )
 
     prompt = f"""
 You are an expert career counselor and industry advisor.
@@ -37,12 +34,7 @@ Return your response in clean Markdown format with these sections:
 (A short motivating summary)
 """
 
-    response = client.models.generate_content(
-        model="gemini-3.6-flash",
-        contents=prompt
-    )
-
-    return response.text
+    return generate_with_fallback(prompt)
 
 
 def career_guidance_page():

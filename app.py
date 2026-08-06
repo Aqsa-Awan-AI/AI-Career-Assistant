@@ -8,6 +8,7 @@ import os
 import streamlit as st
 import pdfplumber
 from google import genai
+from utils.ai_helper import generate_with_fallback
 
 # ==========================================
 # Page Configuration
@@ -141,12 +142,7 @@ Resume:
 {resume_text}
 """
 
-    response = client.models.generate_content(
-        model="gemini-3.6-flash",
-        contents=prompt
-    )
-
-    return response.text
+    return generate_with_fallback(prompt)
 
 
 # ==========================================
